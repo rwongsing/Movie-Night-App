@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th {
+                cursor: pointer;
+            }
+            th, td {
+                padding: 10px;
+            }
+            td {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <form action="/" method="POST">
+    <body style="background-color: powderblue;">
+        <h1>Squad Link Movies</h1>
+        <h3>Click on headers to sort</h3>
+        <table style="font-family: 'Courier New', Courier, monospace; width:60%" id="movieTable">
+            <tr>
+                <th>Check</th>
+                <th onclick="sortTable(1, false)">Movie</th>
+                <th onclick="sortTable(2, true)">Rating</th>
+                <th onclick="sortTable(3, true)">Duration</th>
+                <th onclick="sortTable(4, false)">Genre</th>
+            </tr>
+            {% for movie in movies %}
+                <tr>
+                    <td><input type="checkbox" name="checkedMovies" value={{movie.id}}></td>
+                    <td>{{movie.name}}</td>
+                    <td>{{movie.rating}}</td>
+                    <td>{{movie.duration[0]}}</td>
+                    <td>{% for genre in movie.genre %}
+                            {{genre}}
+                            {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p>
+            <button onclick="sortTable(1, false)">Sort by Name</button>
+            <button onclick="sortTable(2, true)">Sort by Rating</button>
+            <button onclick="sortTable(3, true)">Sort by Duration</button>
+            <button onclick="sortTable(4, false)">Group by Genre</button>
+        </p>
+
+        <p>
+            <label><b>Movie Title</b></label>
+            <input type="text" id="movieTitle" name="movieTitle">
+            <button type="submit" name="addMovie">Add Movie</button>
+            
+        </p>
+
+        <p>
+            <button type="submit" name="deleteMovie">Delete Movie</button>
+        </p>
+    </form>
+        
+        <script>
+            function swap(row1, row2) {
+                row1.parentNode.insertBefore(row2, row1);
+            }
+
+            function sortTable(n, isNum) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("movieTable");
+                switching = true;
+                dir = "asc"; 
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        x = rows[i].getElementsByTagName("TD")[n];
+                        y = rows[i + 1].getElementsByTagName("TD")[n];
+                        if (dir == "asc") {
+                            if(isNum) {
+                                if(Number(x.innerHTML) > Number(y.innerHTML)) {
+                                    swap(rows[i], rows[i+1]);
+                                    switchcount++;
+                                    switching = true;
+                                    break;
+                                }
+                            } else {
+                                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                    swap(rows[i], rows[i+1]);
+                                    switchcount++;
+                                    switching = true;
+                                    break;
+                                }
+                            }
+                        } else if (dir == "desc") {
+                            if(isNum) {
+                                if(Number(x.innerHTML) < Number(y.innerHTML)) {
+                                    swap(rows[i], rows[i+1]);
+                                    switchcount++;
+                                    switching = true;
+                                    break;
+                                }
+                            } else {
+                                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                    swap(rows[i], rows[i+1]);
+                                    switchcount++;
+                                    switching = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
