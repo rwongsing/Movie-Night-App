@@ -34,10 +34,10 @@ def deleteMovie(delMovies):
     with open(r'C:\Users\rwong\Desktop\Coding\movie picker\movie.json') as file:
         movies = json.load(file)
 
-    for movieId in delMovies:
+    for movieName in delMovies:
         counter = 0
         for movie in movies:
-            if movie['id'] == movieId:
+            if movie['name'] == movieName:
                 movies.pop(counter)
             counter += 1
             
@@ -62,7 +62,6 @@ def home():
     with open(r'C:\Users\rwong\Desktop\Coding\movie picker\movie.json', "r") as file:
         movies = json.load(file)
         return render_template('home.html', movies=movies)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

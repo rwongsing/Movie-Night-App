@@ -15,6 +15,33 @@
         ]
     },
     {
+        "id": "0351283",
+        "name": "Madagascar",
+        "rating": 6.9,
+        "duration": [
+            "86"
+        ],
+        "genre": [
+            "Animation",
+            "Adventure",
+            "Comedy",
+            "Family"
+        ]
+    },
+    {
+        "id": "0457510",
+        "name": "Nacho Libre",
+        "rating": 5.8,
+        "duration": [
+            "92"
+        ],
+        "genre": [
+            "Comedy",
+            "Family",
+            "Sport"
+        ]
+    },
+    {
         "id": "1192628",
         "name": "Rango",
         "rating": 7.2,

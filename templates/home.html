@@ -15,6 +15,18 @@
             td {
                 text-align: center;
             }
+            .container {
+                position: relative;
+                font-family: 'Arial Black', Gadget, sans-serif;
+                font-size: 25px;
+            }
+            .text-block {
+                position: absolute;
+                top: 77%;
+                left: 11.5%;
+                transform: translate(-50%, -50%);
+                color: black;
+            }
         </style>
     </head>
     <form action="/" method="POST">
@@ -23,7 +35,7 @@
         <h3>Click on headers to sort</h3>
         <table style="font-family: 'Courier New', Courier, monospace; width:60%" id="movieTable">
             <tr>
-                <th>Check</th>
+                <th onclick="checkAll()">Check</th>
                 <th onclick="sortTable(1, false)">Movie</th>
                 <th onclick="sortTable(2, true)">Rating</th>
                 <th onclick="sortTable(3, true)">Duration</th>
@@ -31,7 +43,7 @@
             </tr>
             {% for movie in movies %}
                 <tr>
-                    <td><input type="checkbox" name="checkedMovies" value={{movie.id}}></td>
+                    <td><input type="checkbox" name="checkedMovies" value="{{movie.name}}"></td>
                     <td>{{movie.name}}</td>
                     <td>{{movie.rating}}</td>
                     <td>{{movie.duration[0]}}</td>
@@ -45,15 +57,15 @@
         </table>
 
         <p>
-            <button onclick="sortTable(1, false)">Sort by Name</button>
-            <button onclick="sortTable(2, true)">Sort by Rating</button>
-            <button onclick="sortTable(3, true)">Sort by Duration</button>
-            <button onclick="sortTable(4, false)">Group by Genre</button>
+            <button type="button" onclick="sortTable(1, false)">Sort by Name</button>
+            <button type="button" onclick="sortTable(2, true)">Sort by Rating</button>
+            <button type="button" onclick="sortTable(3, true)">Sort by Duration</button>
+            <button type="button" onclick="sortTable(4, false)">Group by Genre</button>
         </p>
 
         <p>
             <label><b>Movie Title</b></label>
-            <input type="text" id="movieTitle" name="movieTitle">
+            <input type="text" id="movieTitle" name="movieTitle" autocomplete="off">
             <button type="submit" name="addMovie">Add Movie</button>
             
         </p>
@@ -62,7 +74,15 @@
             <button type="submit" name="deleteMovie">Delete Movie</button>
         </p>
     </form>
-        
+
+        <button onclick="randomPick()">Randomizer</button>
+        <div class="container">
+            <p id="randomImg"style="visibility: hidden;"><img src="static/kyle2.jpg" width="20%" height="20%"></p>
+            <div class="text-block">
+                <p id="randomPick"></p>
+            </div>
+        </div>
+
         <script>
             function swap(row1, row2) {
                 row1.parentNode.insertBefore(row2, row1);
@@ -120,6 +140,34 @@
                         switching = true;
                     }
                 }
+            }
+
+            function randomPick() {
+                const checkboxes = document.querySelectorAll('input[name="checkedMovies"]:checked');
+                let movies = [];
+                checkboxes.forEach((checkbox) => {
+                    movies.push(checkbox.value);
+                });
+                
+                if(movies.length != 0) {
+                    var index = Math.floor(Math.random() * (movies.length));
+                    document.getElementById("randomPick").innerHTML = movies[index];
+
+                    document.getElementById("randomImg").style.visibility = "visible";
+                }
+            }
+        
+            function checkAll() {
+                var checkboxes = document.querySelectorAll('input[name="checkedMovies"]');
+                var val = checkboxes[0].checked;
+                for(var i=1; i < checkboxes.length; i++) {
+                    if(val) {
+                        checkboxes[i].checked = false; 
+                    } else {
+                        checkboxes[i].checked = true;
+                    }
+                }
+                checkboxes[0].checked = !checkboxes[0].checked;
             }
         </script>
     </body>
